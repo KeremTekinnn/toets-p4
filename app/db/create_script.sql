@@ -1,279 +1,124 @@
--- Step: 01
--- Goal: Create a new database mvc-2209a-P4
--- **********************************************************************************
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 02, 2023 at 11:31 AM
+-- Server version: 5.7.36
+-- PHP Version: 7.4.26
 
--- Check if the database exists
-DROP DATABASE IF EXISTS `Mvc-2209a-P4`;
-
--- Create a new Database
-CREATE DATABASE IF NOT EXISTS `Mvc-2209a-P4`;
-
--- Use database Mvc-2209a-P4
-Use `Mvc-2209a-P4`;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
--- Step: 02
--- Goal: Create a new table Instructeur
--- **********************************************************************************
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
--- Drop table Instructeur
-DROP TABLE IF EXISTS Examen;
+--
+-- Database: `mvc-2209c-toets`
+--
 
-CREATE TABLE IF NOT EXISTS Examen
-(
-    Id              TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,Student        VARCHAR(50)                     NOT NULL
-   ,Tussenvoegsel   VARCHAR(10)                     NOT NULL
-   ,Achternaam      VARCHAR(50)                     NOT NULL
-   ,Mobiel          VARCHAR(12)                     NOT NULL
-   ,DatumInDienst   DATE                            NOT NULL
-   ,AantalSterren   VARCHAR(6)                      NOT NULL
-   ,IsActief        BIT                             NOT NULL    DEFAULT 1
-   ,Opmerkingen     VARCHAR(250)                        NULL    DEFAULT NULL
-   ,DatumAangemaakt DateTime(6)                     NOT NULL
-   ,DatumGewijzigd  DateTime(6)                     NOT NULL
+-- --------------------------------------------------------
 
-   ,CONSTRAINT      PK_Instructeur_Id   PRIMARY KEY CLUSTERED(Id)
-) ENGINE=InnoDB;
+--
+-- Table structure for table `Examen`
+--
 
+DROP TABLE IF EXISTS `Examen`;
+CREATE TABLE IF NOT EXISTS `Examen` (
+  `Id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `StudentId` int(6) NOT NULL,
+  `Rijschool` varchar(50) NOT NULL,
+  `Stad` varchar(20) NOT NULL,
+  `Rijbewijscategorie` varchar(2) NOT NULL,
+  `Datum` date NOT NULL,
+  `Uitslag` varchar(10) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Step: 03
--- Goal: Fill table Instructeur with data
--- **********************************************************************************
+--
+-- Dumping data for table `Examen`
+--
 
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
+INSERT INTO `Examen` (`Id`, `StudentId`, `Rijschool`, `Stad`, `Rijbewijscategorie`, `Datum`, `Uitslag`) VALUES
+(1, 100234, 'VolGasVooruit', 'Rotterdam', 'B', '2023-04-03', 'Geslaagd'),
+(2, 123432, 'InZijnVierDoorDeBocht', 'Sliedrecht', 'C', '2023-03-01', 'Geslaagd'),
+(3, 103234, 'LinksomRechtsom', 'Dordrecht', 'D', '2023-05-15', 'Geslaagd'),
+(4, 106452, 'OpDeVluchtStrook', 'Zwijndrecht', 'AM', '2023-05-08', 'Gezakt'),
+(5, 104546, 'RechtDoorEnGaan', 'Rotterdam', 'B', '2023-04-17', 'Gezakt'),
+(6, 100333, 'AltijdGeslaagd', 'Dordrecht', 'B', '2023-05-12', 'Geslaagd'),
+(7, 124444, 'RijlesVoorJou', 'Rotterdam', 'B', '2023-04-12', 'Geslaagd');
 
-INSERT INTO Instructeur
-(
-     Voornaam
-    ,Tussenvoegsel
-    ,Achternaam
-    ,Mobiel
-    ,DatumInDienst
-    ,AantalSterren
-    ,IsActief
-    ,Opmerkingen
-    ,DatumAangemaakt
-    ,DatumGewijzigd
-)
-VALUES
-     ('Li', '', 'Zhan', '06-28493827', '2015-04-17', '***', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Leroy', '', 'Boerhaven', '06-39398734', '2018-06-25', '*', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Yoeri', 'van', 'Veen', '06-24383291', '2010-05-12', '***', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Bert', 'van', 'Sali', '06-48293823', '2023-01-10', '****', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Mohammed', 'El', 'Yassidi', '06-34291234', '2010-06-14', '*****', 1, NULL, SYSDATE(6), SYSDATE(6));
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `ExamenPerExaminator`
+--
 
+DROP TABLE IF EXISTS `ExamenPerExaminator`;
+CREATE TABLE IF NOT EXISTS `ExamenPerExaminator` (
+  `Id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ExamenId` tinyint(3) UNSIGNED NOT NULL,
+  `ExaminatorId` tinyint(3) UNSIGNED NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `FK_ExamenPerExaminator_ExamenId_Examen_Id` (`ExamenId`),
+  KEY `FK_ExamenPerExaminator_ExaminatorId_Examinator_Id` (`ExaminatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Step: 04
--- Goal: Create a new table TypeVoertuig
--- **********************************************************************************
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
+--
+-- Dumping data for table `ExamenPerExaminator`
+--
 
--- Drop table TypeVoertuig
-DROP TABLE IF EXISTS TypeVoertuig;
+INSERT INTO `ExamenPerExaminator` (`Id`, `ExamenId`, `ExaminatorId`) VALUES
+(1, 1, 3),
+(2, 3, 3),
+(3, 2, 2),
+(4, 4, 1),
+(5, 7, 3),
+(6, 6, 2),
+(7, 5, 4);
 
-CREATE TABLE IF NOT EXISTS TypeVoertuig
-(
-    Id                  TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,TypeVoertuig        VARCHAR(20)                     NOT NULL
-   ,Rijbewijscategorie  VARCHAR(5)                      NOT NULL
-   ,IsActief            BIT                             NOT NULL    DEFAULT 1
-   ,Opmerkingen         VARCHAR(250)                        NULL    DEFAULT NULL
-   ,DatumAangemaakt     DateTime(6)                     NOT NULL
-   ,DatumGewijzigd      DateTime(6)                     NOT NULL
+-- --------------------------------------------------------
 
-   ,CONSTRAINT      PK_TypeVoertuig_Id   PRIMARY KEY CLUSTERED(Id)
-) ENGINE=InnoDB;
+--
+-- Table structure for table `Examinator`
+--
 
+DROP TABLE IF EXISTS `Examinator`;
+CREATE TABLE IF NOT EXISTS `Examinator` (
+  `Id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Voornaam` varchar(20) NOT NULL,
+  `Tussenvoegsel` varchar(10) DEFAULT NULL,
+  `Achternaam` varchar(20) NOT NULL,
+  `Mobiel` varchar(12) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Step: 05
--- Goal: Fill table TypeVoertuig with data
--- **********************************************************************************
+--
+-- Dumping data for table `Examinator`
+--
 
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
+INSERT INTO `Examinator` (`Id`, `Voornaam`, `Tussenvoegsel`, `Achternaam`, `Mobiel`) VALUES
+(1, 'Manuel', 'van', 'Meekeren', '06-28493823'),
+(2, 'Lissette', 'den', 'Dongen', '06-24383299'),
+(3, 'Jurswailly', '', 'Luciano', '06-48293846'),
+(4, 'Nashwa', '', 'Salawi', '06-34291219');
 
-INSERT INTO TypeVoertuig
-(
-     TypeVoertuig
-    ,Rijbewijscategorie
-    ,IsActief
-    ,Opmerkingen
-    ,DatumAangemaakt
-    ,DatumGewijzigd
-)
-VALUES
-     ('Personenauto', 'B', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Vrachtwagen', 'C', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Bus', 'D', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('Bromfiets', 'AM', 1, NULL, SYSDATE(6), SYSDATE(6));
+--
+-- Constraints for dumped tables
+--
 
+--
+-- Constraints for table `ExamenPerExaminator`
+--
+ALTER TABLE `ExamenPerExaminator`
+  ADD CONSTRAINT `FK_ExamenPerExaminator_ExamenId_Examen_Id` FOREIGN KEY (`ExamenId`) REFERENCES `Examen` (`Id`),
+  ADD CONSTRAINT `FK_ExamenPerExaminator_ExaminatorId_Examinator_Id` FOREIGN KEY (`ExaminatorId`) REFERENCES `Examinator` (`Id`);
+COMMIT;
 
-
--- Step: 06
--- Goal: Create a new table Voertuig
--- **********************************************************************************
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
-
--- Drop table Voertuig
-DROP TABLE IF EXISTS Voertuig;
-
-CREATE TABLE IF NOT EXISTS Voertuig
-(
-    Id                  TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,Kenteken            VARCHAR(12)                     NOT NULL
-   ,Type                VARCHAR(20)                     NOT NULL
-   ,Bouwjaar            DATE                            NOT NULL
-   ,Brandstof           VARCHAR(20)                     NOT NULL  
-   ,TypeVoertuigId      TINYINT         UNSIGNED        NOT NULL  
-   ,IsActief            BIT                             NOT NULL    DEFAULT 1
-   ,Opmerkingen         VARCHAR(250)                        NULL    DEFAULT NULL
-   ,DatumAangemaakt     DateTime(6)                     NOT NULL
-   ,DatumGewijzigd      DateTime(6)                     NOT NULL
-
-   ,CONSTRAINT      PK_Voertuig_Id   PRIMARY KEY CLUSTERED(Id)
-   ,CONSTRAINT      FK_Voertuig_TypeVoertuigId_TypeVoertuig_Id  FOREIGN KEY (TypeVoertuigId) REFERENCES TypeVoertuig(Id)
-) ENGINE=InnoDB;
-
-
--- Step: 07
--- Goal: Fill table Voertuig with data
--- **********************************************************************************
-
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
-
-INSERT INTO Voertuig
-(
-     Kenteken
-    ,Type
-    ,Bouwjaar
-    ,Brandstof
-    ,TypeVoertuigId
-    ,IsActief
-    ,Opmerkingen
-    ,DatumAangemaakt
-    ,DatumGewijzigd
-)
-VALUES
-     ('AU-67-IO', 'Golf', '2017-06-12', 'Diesel', 1, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('TR-24-OP', 'DAF', '2019-05-23', 'Diesel', 2, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('TH-78-KL', 'Mercedes', '2023-01-01', 'Benzine', 1, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('90-KL-TR', 'Fiat 500', '2021-09-12', 'Benzine', 1, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('34-TK-LP', 'Scania', '2015-03-13', 'Diesel', 2, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('YY-OP-78', 'BMW M5', '2022-05-13', 'Diesel', 1, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('UU-HH-JK', 'M.A.N', '2017-12-03', 'Diesel', 2, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('ST-FZ-28', 'Citroën', '2018-01-20', 'Elektrisch', 1, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('123-FR-T', 'Piaggio ZIP', '2021-02-01', 'Benzine', 4, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('DRS-52-P', 'Vespa', '2022-03-21', 'Benzine', 4, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('STP-12-U', 'Vespa', '2022-07-02', 'Benzine', 4, 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,('45-SD-23', 'Renault', '2023-01-01', 'Diesel', 3, 1, NULL, SYSDATE(6), SYSDATE(6));
-
-
-
--- Step: 08
--- Goal: Create a new table VoertuigInstructeur
--- **********************************************************************************
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
-
--- Drop table VoertuigInstructeur
-DROP TABLE IF EXISTS VoertuigInstructeur;
-
-CREATE TABLE IF NOT EXISTS VoertuigInstructeur
-(
-    Id                  TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,VoertuigId          TINYINT         UNSIGNED        NOT NULL
-   ,InstructeurId       TINYINT         UNSIGNED        NOT NULL
-   ,DatumToekenning     DATE                            NOT NULL
-   ,IsActief            BIT                             NOT NULL    DEFAULT 1
-   ,Opmerkingen         VARCHAR(250)                        NULL    DEFAULT NULL
-   ,DatumAangemaakt     DateTime(6)                     NOT NULL
-   ,DatumGewijzigd      DateTime(6)                     NOT NULL
-
-   ,CONSTRAINT      PK_VoertuigInstructeur_Id   PRIMARY KEY CLUSTERED(Id)
-   ,CONSTRAINT      FK_VoertuigInstructeur_VoertuigId_Voertuig_Id  FOREIGN KEY (VoertuigId) REFERENCES Voertuig(Id)
-   ,CONSTRAINT      FK_VoertuigInstructeur_InstructeurId_Instructeur_Id  FOREIGN KEY (InstructeurId) REFERENCES Instructeur(Id)
-) ENGINE=InnoDB;
-
-
--- Step: 09
--- Goal: Fill table VoertuigInstructeur with data
--- **********************************************************************************
-
--- Version       Date:           Author:                     Description:
--- *******       **********      ****************            ******************
--- 01            04-04-2023      Arjan de Ruijter            New
--- **********************************************************************************/
-
-INSERT INTO VoertuigInstructeur
-(
-     VoertuigId
-    ,InstructeurId
-    ,DatumToekenning
-    ,IsActief
-    ,Opmerkingen
-    ,DatumAangemaakt
-    ,DatumGewijzigd
-)
-VALUES
-     (1, 5, '2017-06-18', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,(3, 1, '2021-09-26', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,(9, 1, '2021-09-27', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,(3, 4, '2022-08-01', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,(5, 1, '2019-08-30', 1, NULL, SYSDATE(6), SYSDATE(6))
-    ,(10, 5, '2020-02-02', 1, NULL, SYSDATE(6), SYSDATE(6));
-   
-CREATE TABLE IF NOT EXISTS ExamenPerExaminator
-(
-    Id                  TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,ExamenId                  TINYINT         UNSIGNED        NOT NULL    
-    ,Id                  TINYINT         UNSIGNED        NOT NULL    
-
-   ,CONSTRAINT      PK_Examen_Id   PRIMARY KEY CLUSTERED(Id)
-   ,CONSTRAINT      FK_ExamenPerExaminator_TypeVoertuigId_TypeVoertuig_Id  FOREIGN KEY (TypeVoertuigId) REFERENCES TypeVoertuig(Id)
-) ENGINE=InnoDB;CREATE TABLE IF NOT EXISTS ExamenPerExaminator
-(
-    Id                  TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,ExamenId                  TINYINT         UNSIGNED        NOT NULL    
-    ,Id                  TINYINT         UNSIGNED        NOT NULL    
-
-   ,CONSTRAINT      PK_Examen_Id   PRIMARY KEY CLUSTERED(Id)
-   ,CONSTRAINT      FK_ExamenPerExaminator_TypeVoertuigId_TypeVoertuig_Id  FOREIGN KEY (TypeVoertuigId) REFERENCES TypeVoertuig(Id)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS Examinator
-(
-    Id              TINYINT         UNSIGNED        NOT NULL    AUTO_INCREMENT
-   ,Voornaam        VARCHAR(20)                     NOT NULL
-   ,Tussenvoegsel   VARCHAR(10)                     NOT NULL
-   ,Achternaam      VARCHAR(20)                     NOT NULL
-   ,Mobiel          VARCHAR(12)                     NOT NULL
-
-   ,CONSTRAINT      PK_Examinator_Id   PRIMARY KEY CLUSTERED(Id)
-) ENGINE=InnoDB;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
